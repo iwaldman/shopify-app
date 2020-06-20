@@ -1,5 +1,7 @@
 require('isomorphic-fetch')
 const Koa = require('koa')
+const KoaRouter = require('koa-router')
+const koaBody = require('koa-body')
 const next = require('next')
 const { default: createShopifyAuth } = require('@shopify/koa-shopify-auth')
 const dotenv = require('dotenv')
@@ -17,8 +19,41 @@ const handle = app.getRequestHandler()
 
 const { SHOPIFY_API_SECRET_KEY, SHOPIFY_API_KEY } = process.env
 
+const server = new Koa()
+const router = new KoaRouter()
+
+const products = [
+  {
+    image1: 'test',
+  },
+]
+
+router.post('/api/products', koaBody(), async (ctx) => {
+  try {
+    const body = ctx.request.body
+    products.push(body)
+    ctx.body = 'Item added'
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+// Router middleware
+server.use(router.allowedMethods())
+server.use(router.routes())
+
+router.get('/api/products', async (ctx) => {
+  try {
+    ctx.body = {
+      status: 'success',
+      data: products,
+    }
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 app.prepare().then(() => {
-  const server = new Koa()
   server.use(session({ sameSite: 'none', secure: true }, server))
   server.keys = [SHOPIFY_API_SECRET_KEY]
 
@@ -46,6 +81,7 @@ app.prepare().then(() => {
 
   server.use(graphQLProxy({ version: ApiVersion.July20 }))
   server.use(verifyRequest())
+
   server.use(async (ctx) => {
     await handle(ctx.req, ctx.res)
     ctx.respond = false
