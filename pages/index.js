@@ -26,8 +26,8 @@ const Index = () => {
         onCancel={() => setModal({ open: false })}
         onSelection={(resources) => handleSelection(resources)}
       />
-      <Layout>
-        {emptyState ? (
+      {emptyState ? (
+        <Layout>
           <EmptyState
             heading="Select products to start"
             action={{
@@ -38,10 +38,10 @@ const Index = () => {
           >
             <p>Select products</p>
           </EmptyState>
-        ) : (
-          <ProductList />
-        )}
-      </Layout>
+        </Layout>
+      ) : (
+        <ProductList />
+      )}
     </Page>
   )
 }
