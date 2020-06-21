@@ -25,7 +25,7 @@ const Index = () => {
     const url = '/api/products'
 
     try {
-      const response = await axios.post(url, products)
+      const response = await axios.post(url, product)
     } catch (error) {
       console.log(error)
     }
