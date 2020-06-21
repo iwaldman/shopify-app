@@ -22,17 +22,22 @@ const { SHOPIFY_API_SECRET_KEY, SHOPIFY_API_KEY } = process.env
 const server = new Koa()
 const router = new KoaRouter()
 
-const products = [
-  {
-    image1: 'test',
-  },
-]
+let products = []
 
 router.post('/api/products', koaBody(), async (ctx) => {
   try {
     const body = ctx.request.body
     products.push(body)
     ctx.body = 'Item added'
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+router.delete('/api/products', koaBody(), async (ctx) => {
+  try {
+    products = []
+    ctx.body = 'All Items deleted'
   } catch (error) {
     console.log(error)
   }
