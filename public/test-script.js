@@ -73,7 +73,7 @@ const makeApp = (products) => {
 async function fetchProducts() {
   try {
     const response = await fetch(
-      'https://cors-anywhere.herokuapp.com/https://6f3bdec3c964.ngrok.io/api/products?shop=dev-learning-app-store.myshopify.com/'
+      'https://cors-anywhere.herokuapp.com/https://495805e98b65.ngrok.io/api/products?shop=dev-learning-app-store.myshopify.com/'
     )
 
     const { data } = await response.json()
